@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-api-test-deploy
+  namespace: notification-api-test
+  labels:
+    app: notification-api-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-api-test
+  template:
+    metadata:
+      labels:
+        app: notification-api-test
+    spec:
+      terminationGracePeriodSeconds: 1
+      containers:
+      - name: notification-api-test-ctr
+        image: omtejedahumano/notification-api:6.8
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_NAME
+          value: Notification
+        - name: DB_CONNECTION_STRING
+          value: mongodb://admin:sCTfUtnqE0CZ@mongodb-standalone-test-0.database.notification-api-test.svc.cluster.local?authSource=admin
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Development
+        - name: LIMIT_PAGE_SIZE
+          value: "50"
+        - name: GMT_TIMEZONE
+          value: "-4"
